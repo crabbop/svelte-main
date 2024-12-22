@@ -7,6 +7,7 @@
   let cardData = {};
   let relatedCards = [];
   let allCards = [];
+  let isCorrectGuess = false;
   const packCodes = ['rwr', 'tai', 'su21', 'sg'];
 
   async function fetchRandomCard() {
@@ -15,6 +16,7 @@
     const filteredCards = data.data.filter(card => packCodes.includes(card.pack_code));
     const randomCard = filteredCards[Math.floor(Math.random() * filteredCards.length)];
     cardData = randomCard;
+    isCorrectGuess = false;
 
     // Fetch related cards
     relatedCards = filteredCards.filter(card => card.type_code === cardData.type_code && card.code !== cardData.code).slice(0, 3);
@@ -40,6 +42,7 @@
   function checkAnswer(event, title) {
     if (title === cardData.title) {
       event.target.style.backgroundColor = 'green';
+      isCorrectGuess = true;
     } else {
       event.target.style.backgroundColor = 'red';
     }
@@ -64,6 +67,16 @@
   .card-image {
     max-width: 300px;
     border-radius: 8px;
+    position: relative;
+  }
+  .card-image-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 12%;
+    background-color: rgb(70, 66, 66);
+    z-index: 1;
   }
   .refresh-container {
     display: flex;
@@ -105,7 +118,7 @@
   }
   .related-cards a {
     display: block;
-    margin-top: 40px;
+    margin-top: 10px;
     text-decoration: none;
     color: #007acc;
   }
@@ -113,9 +126,16 @@
 
 {#if cardData}
   <div class="card-container">
-    <img class="card-image" src={getCardImageUrl(cardData.code)} alt={cardData.title} />
+    <div class="card-image">
+      <img src={getCardImageUrl(cardData.code)} alt={cardData.title} />
+      {#if !isCorrectGuess}
+        <div class="card-image-mask"></div>
+      {/if}
+    </div>
     <div class="card-details">
-      <h2>{cardData.title}</h2>
+      {#if isCorrectGuess}
+        <h2>{cardData.title}</h2>
+      {/if}
       <p>{@html cardData.text}</p>
       <p>Type: {cardData.type_code}</p>
       <p>Faction: {cardData.faction_code}</p>
