@@ -91,6 +91,10 @@
     return `https://card-images.netrunnerdb.com/v2/large/${code}.jpg`;
   }
 
+  function handleImageError(event) {
+    event.target.src = 'default-image.png'; // Updated path to your fallback image
+  }
+
   function checkAnswer(event, title) {
     if (title === cardData.title) {
       event.target.style.backgroundColor = 'green';
@@ -290,7 +294,7 @@
     </div>
   </div>
   <div class="card-image">
-    <img src={getCardImageUrl(cardData.code)} alt={cardData.title} />
+    <img src={getCardImageUrl(cardData.code)} alt={cardData.title} on:error={handleImageError} />
     {#if !isCorrectGuess}
       <div class="card-image-mask"></div>
     {/if}
