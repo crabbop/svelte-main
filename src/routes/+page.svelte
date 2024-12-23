@@ -78,9 +78,10 @@
       // Shuffle the array to randomize the positions
       allCards = allCards.sort(() => Math.random() - 0.5);
 
-      // Reset button backgrounds
+      // Reset button backgrounds and text color
       document.querySelectorAll('.related-card-button').forEach(button => {
-        button.style.backgroundColor = '#f9f9f9';
+        button.style.backgroundColor = '#808080'; // Darker grey background color
+        button.style.color = '#fff'; // White text color
       });
     }
   }
@@ -106,6 +107,13 @@
 </script>
 
 <style>
+  :global(body) {
+    background-color: #727272; /* Light grey background color */
+    color: #000; /* Default text color */
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
   .card-container {
     display: flex;
     align-items: flex-start;
@@ -117,7 +125,7 @@
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #a9a9a9; /* Darker grey background color */
     width: 600px; /* Twice the width of the card image */
   }
   .card-title {
@@ -150,13 +158,19 @@
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #a9a9a9; /* Darker grey background color */
     margin-bottom: 20px; /* Add margin to separate from options */
     width: 250px; /* Same width as options panel */
   }
   .refresh-button {
     width: 100%; /* Full width */
     margin-top: 20px;
+    background-color: #808080; /* Darker grey background color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
   }
   .related-cards {
     display: flex;
@@ -178,7 +192,7 @@
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #a9a9a9; /* Darker grey background color */
     width: 150px; /* 25% of card-details width */
     text-align: center;
   }
@@ -190,7 +204,8 @@
     cursor: pointer;
     padding: 10px;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #808080; /* Darker grey background color */
+    color: #fff; /* White text color */
   }
   .related-cards a {
     display: block;
@@ -225,7 +240,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Align items to the left */
-    background-color: #f0f0f0; /* Light grey background color */
+    background-color: #a9a9a9; /* Darker grey background color */
     padding: 10px;
     border-radius: 8px;
     width: 250px; /* Reduce width */
@@ -261,7 +276,7 @@
     <div class="options-container">
       <h3>Options</h3>
       <div class="option-group">
-        <label>Guess options:</label>
+        <label>Guess' displayed:</label>
         <label><input type="radio" bind:group={numberOfButtons} value="2" on:change={fetchRandomCard}> 2</label>
         <label><input type="radio" bind:group={numberOfButtons} value="3" on:change={fetchRandomCard}> 3</label>
         <label><input type="radio" bind:group={numberOfButtons} value="4" on:change={fetchRandomCard}> 4</label>
