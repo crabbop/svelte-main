@@ -116,6 +116,14 @@
     background-color: #f9f9f9;
     width: 600px; /* Twice the width of the card image */
   }
+  .card-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .card-title-blurred {
+    filter: blur(10px); /* Apply blur effect */
+  }
   .card-image {
     max-width: 300px;
     border-radius: 8px;
@@ -148,9 +156,19 @@
   }
   .related-cards {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
     margin-top: 20px;
+  }
+  .related-cards-title {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  .related-card-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
   }
   .related-card {
     border: 1px solid #ccc;
@@ -231,71 +249,71 @@
   <p style="color: red; text-align: center; font-size: medium;">Invalid Guess Options - Change Selections</p>
 {/if}
 
-{#if cardData.code}
-  <div class="card-container">
-    <div>
-      <div class="refresh-container">
-        <button class="refresh-button" on:click={fetchRandomCard}>Refresh Card</button>
+<div class="card-container">
+  <div>
+    <div class="refresh-container">
+      <button class="refresh-button" on:click={fetchRandomCard}>Refresh Card</button>
+    </div>
+    <div class="options-container">
+      <h3>Options</h3>
+      <div class="option-group">
+        <label>Guess options:</label>
+        <label><input type="radio" bind:group={numberOfButtons} value="2" on:change={fetchRandomCard}> 2</label>
+        <label><input type="radio" bind:group={numberOfButtons} value="3" on:change={fetchRandomCard}> 3</label>
+        <label><input type="radio" bind:group={numberOfButtons} value="4" on:change={fetchRandomCard}> 4</label>
       </div>
-      <div class="options-container">
-        <h3>Options</h3>
-        <div class="option-group">
-          <label>Guess options:</label>
-          <label><input type="radio" bind:group={numberOfButtons} value="2" on:change={fetchRandomCard}> 2</label>
-          <label><input type="radio" bind:group={numberOfButtons} value="3" on:change={fetchRandomCard}> 3</label>
-          <label><input type="radio" bind:group={numberOfButtons} value="4" on:change={fetchRandomCard}> 4</label>
-        </div>
-        <div class="option-group">
-          <label>Side:</label>
-          <label><input type="checkbox" bind:checked={selectedSideCodes.runner} on:change={fetchRandomCard}> Runner</label>
-          <label><input type="checkbox" bind:checked={selectedSideCodes.corp} on:change={fetchRandomCard}> Corp</label>
-        </div>
-        <div class="option-group">
-          <label>Faction:</label>
-          {#each Object.keys(selectedFactionCodes) as faction}
-            <label><input type="checkbox" bind:checked={selectedFactionCodes[faction]} on:change={fetchRandomCard}> 
-              {#if faction === 'neutral-corp'}
-                Neutral (Corp)
-              {:else if faction === 'neutral-runner'}
-                Neutral (Runner)
-              {:else}
-                {faction.charAt(0).toUpperCase() + faction.slice(1).replace('-', ' ')}
-              {/if}
-            </label>
-          {/each}
-        </div>
-        <div class="option-group">
-          <label>Type:</label>
-          {#each Object.keys(selectedTypeCodes) as type}
-            <label><input type="checkbox" bind:checked={selectedTypeCodes[type]} on:change={fetchRandomCard}> {type.charAt(0).toUpperCase() + type.slice(1)}</label>
-          {/each}
-        </div>
+      <div class="option-group">
+        <label>Side:</label>
+        <label><input type="checkbox" bind:checked={selectedSideCodes.runner} on:change={fetchRandomCard}> Runner</label>
+        <label><input type="checkbox" bind:checked={selectedSideCodes.corp} on:change={fetchRandomCard}> Corp</label>
+      </div>
+      <div class="option-group">
+        <label>Faction:</label>
+        {#each Object.keys(selectedFactionCodes) as faction}
+          <label><input type="checkbox" bind:checked={selectedFactionCodes[faction]} on:change={fetchRandomCard}> 
+            {#if faction === 'neutral-corp'}
+              Neutral (Corp)
+            {:else if faction === 'neutral-runner'}
+              Neutral (Runner)
+            {:else}
+              {faction.charAt(0).toUpperCase() + faction.slice(1).replace('-', ' ')}
+            {/if}
+          </label>
+        {/each}
+      </div>
+      <div class="option-group">
+        <label>Type:</label>
+        {#each Object.keys(selectedTypeCodes) as type}
+          <label><input type="checkbox" bind:checked={selectedTypeCodes[type]} on:change={fetchRandomCard}> {type.charAt(0).toUpperCase() + type.slice(1)}</label>
+        {/each}
       </div>
     </div>
-    <div class="card-image">
-      <img src={getCardImageUrl(cardData.code)} alt={cardData.title} />
-      {#if !isCorrectGuess}
-        <div class="card-image-mask"></div>
-      {/if}
-    </div>
+  </div>
+  <div class="card-image">
+    <img src={getCardImageUrl(cardData.code)} alt={cardData.title} />
+    {#if !isCorrectGuess}
+      <div class="card-image-mask"></div>
+    {/if}
+  </div>
+  <div>
     <div class="card-details">
-      {#if isCorrectGuess}
-        <h2>{cardData.title}</h2>
-      {/if}
+      <h2 class="card-title {isCorrectGuess ? '' : 'card-title-blurred'}">{isCorrectGuess ? cardData.title : 'XXXX - XXXX'}</h2>
       <p>{@html cardData.text}</p>
       <p>Type: {cardData.type_code}</p>
       <p>Faction: {cardData.faction_code}</p>
     </div>
-  </div>
-
-  {#if allCards.length > 0}
-    <div class="related-cards">
-      {#each allCards as card}
-        <div class="related-card">
-          <button class="related-card-button" on:click={(event) => checkAnswer(event, card.title)}>{card.title}</button>
-          <a href={`https://netrunnerdb.com/en/card/${card.code}`} target="_blank">View on NetrunnerDB</a>
+    {#if allCards.length > 0}
+      <div class="related-cards">
+        <div class="related-cards-title">Guess the title of the displayed card</div>
+        <div class="related-card-buttons">
+          {#each allCards as card}
+            <div class="related-card">
+              <button class="related-card-button" on:click={(event) => checkAnswer(event, card.title)}>{card.title}</button>
+              <a href={`https://netrunnerdb.com/en/card/${card.code}`} target="_blank">View on NetrunnerDB</a>
+            </div>
+          {/each}
         </div>
-      {/each}
-    </div>
-  {/if}
-{/if}
+      </div>
+    {/if}
+  </div>
+</div>
