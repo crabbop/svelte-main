@@ -1,6 +1,6 @@
 <div class="options">
     <h2>Options</h2>
-    <p>Man i hop this silly thing works</p>
+    <p>Man I hope this silly thing works</p>
 </div>
 
 <style>
@@ -8,5 +8,5 @@
         text-align: center;
         display: block;
         margin: 20px auto;
-        }
-    </style>
+    }
+</style>
