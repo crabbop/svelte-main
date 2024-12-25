@@ -213,29 +213,6 @@
     text-decoration: none;
     color: #007acc;
   }
-  .dropdown-container {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    margin-top: 20px;
-  }
-  .dropdown-container label {
-    margin-right: 10px;
-  }
-  .filter-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-  }
-  .filter-container div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .filter-container label {
-    margin-bottom: 5px;
-  }
   .options-container {
     display: flex;
     flex-direction: column;
