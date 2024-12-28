@@ -28,6 +28,12 @@
     criminal: 'false',
     shaper: 'false'
   };
+  let selectedPackCodes = {
+    'rebellion-without-rehearsal': 'false',
+    'the-automata-initiative': 'false',
+    'system-update-2021': 'false',
+    'system-gateway': 'false'
+  };
 
   let isCollapsed = false;
 
@@ -48,6 +54,8 @@
       selectedTypeCodes = newType;
     } else if (type === selectedFactionCodes) {
       selectedFactionCodes = newType;
+    } else if (type === selectedPackCodes) {
+      selectedPackCodes = newType;
     }
   }
 
@@ -70,14 +78,15 @@
     background-color: #a9a9a9; /* Darker grey background color */
     padding: 10px;
     border-radius: 8px;
-    width: 250px; /* Reduce width */
+    width: 205px; /* Adjust width to ensure 10px padding on both sides of the buttons */
     margin-right: 20px; /* Move to the left of the card image */
     transition: transform 0.3s ease;
     transform: translateX(var(--translateX, 0));
     position: relative;
+    font-size: 0.9em; /* Make font size smaller */
   }
   .options-container.collapsed {
-    --translateX: -95%; /* Collapse to 95% */
+    --translateX: -96%; /* Collapse to 95% */
   }
   .options-container h3 {
     margin-bottom: 10px;
@@ -94,7 +103,7 @@
   }
   .options-container .option-group button {
     margin-right: 5px;
-    padding: 5px 10px;
+    padding: 2px 5px; /* Reduced padding */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -107,6 +116,7 @@
     padding: 10px;
     background-color: #d3d3d3; /* Light grey background color */
     border-radius: 8px;
+    font-size: 0.9em; /* Make font size smaller */
   }
   .include {
     background-color: green;
@@ -123,7 +133,7 @@
   .toggle-button {
     position: absolute;
     top: 10px;
-    right: var(--button-right, 60px); /* Adjust position based on text length */
+    right: var(--button-right, 45px); /* Adjust position based on text length */
     padding: 5px 10px;
     background-color: #333;
     color: white;
@@ -135,7 +145,7 @@
 </style>
 
 <div class="options-container {isCollapsed ? 'collapsed' : ''}">
-  <button class="toggle-button" on:click={toggleCollapse} style="--button-right: {isCollapsed ? '-120px' : '60px'};">
+  <button class="toggle-button" on:click={toggleCollapse} style="--button-right: {isCollapsed ? '-110px' : '45px'};">
     {isCollapsed ? 'Filter Options' : 'Hide'}
   </button>
   <h3><b>Filter Options</b></h3>
@@ -175,6 +185,15 @@
     {/each}
   </div>
   <div class="option-group">
+    <label>Startup Pack:</label>
+    {#each Object.keys(selectedPackCodes) as pack}
+      <button class={selectedPackCodes[pack]} on:click={() => toggleSelection(selectedPackCodes, pack)}>
+        <span>{pack.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+        <span>{displayValue(selectedPackCodes[pack])}</span>
+      </button>
+    {/each}
+  </div>
+  <div class="option-group">
     <label>Guess options:</label>
     <input type="range" min="2" max="4" bind:value={numberOfButtons} style="width: {sliderWidth}px;">
     <div>Selected: {numberOfButtons}</div>
@@ -200,6 +219,12 @@
   <ul>
     {#each Object.keys(selectedTypeCodes) as type}
       <li>{type.charAt(0).toUpperCase() + type.slice(1)}: {displayValue(selectedTypeCodes[type])}</li>
+    {/each}
+  </ul>
+  <p><b>Pack Codes:</b></p>
+  <ul>
+    {#each Object.keys(selectedPackCodes) as pack}
+      <li>{pack.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}: {displayValue(selectedPackCodes[pack])}</li>
     {/each}
   </ul>
 </div>
