@@ -1,5 +1,3 @@
-<h1>Menu Design</h1>
-
 <script>
   let numberOfButtons = 3; // Default number of buttons
   const sliderWidth = 180; // Slider width
@@ -31,6 +29,8 @@
     shaper: 'false'
   };
 
+  let isCollapsed = false;
+
   function toggleSelection(type, key) {
     console.log(`Toggling ${key} from ${type[key]}`);
     const newType = { ...type };
@@ -56,6 +56,10 @@
     if (value === 'exclude') return '✗';
     return '';
   }
+
+  function toggleCollapse() {
+    isCollapsed = !isCollapsed;
+  }
 </script>
 
 <style>
@@ -68,6 +72,12 @@
     border-radius: 8px;
     width: 250px; /* Reduce width */
     margin-right: 20px; /* Move to the left of the card image */
+    transition: transform 0.3s ease;
+    transform: translateX(var(--translateX, 0));
+    position: relative;
+  }
+  .options-container.collapsed {
+    --translateX: -95%; /* Collapse to 95% */
   }
   .options-container h3 {
     margin-bottom: 10px;
@@ -110,10 +120,25 @@
     background-color: grey;
     color: white;
   }
+  .toggle-button {
+    position: absolute;
+    top: 10px;
+    right: var(--button-right, 60px); /* Adjust position based on text length */
+    padding: 5px 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure the button is on top */
+  }
 </style>
 
-<div class="options-container">
-  <h3>Options</h3>
+<div class="options-container {isCollapsed ? 'collapsed' : ''}">
+  <button class="toggle-button" on:click={toggleCollapse} style="--button-right: {isCollapsed ? '-120px' : '60px'};">
+    {isCollapsed ? 'Filter Options' : 'Hide'}
+  </button>
+  <h3><b>Filter Options</b></h3>
   <div class="option-group">
     <label>Side:</label>
     {#each Object.keys(selectedSideCodes) as side}
