@@ -108,8 +108,8 @@
 
 <style>
   :global(body) {
-    background-color: #727272; /* Light grey background color */
-    color: #000; /* Default text color */
+    background-color: var(--background-color, #727272); /* Use CSS variable with fallback */
+    color: var(--text-color, #000); /* Use CSS variable with fallback */
     margin: 0;
     font-family: Arial, sans-serif;
   }
@@ -122,10 +122,10 @@
     margin-top: 50px;
   }
   .card-details {
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color, #ccc); /* Use CSS variable with fallback */
     padding: 20px;
     border-radius: 8px;
-    background-color: #a9a9a9; /* Darker grey background color */
+    background-color: var(--container-background-color, #a9a9a9); /* Use CSS variable with fallback */
     width: 600px; /* Twice the width of the card image */
   }
   .card-title {
@@ -151,22 +151,18 @@
     z-index: 1;
   }
   .refresh-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color, #ccc); /* Use CSS variable with fallback */
     padding: 20px;
     border-radius: 8px;
-    background-color: #a9a9a9; /* Darker grey background color */
+    background-color: var(--container-background-color, #a9a9a9); /* Use CSS variable with fallback */
     margin-bottom: 20px; /* Add margin to separate from options */
     width: 250px; /* Same width as options panel */
   }
   .refresh-button {
     width: 100%; /* Full width */
     margin-top: 20px;
-    background-color: #808080; /* Darker grey background color */
-    color: #fff; /* White text color */
+    background-color: var(--button-background-color, #808080); /* Use CSS variable with fallback */
+    color: var(--button-text-color, #fff); /* Use CSS variable with fallback */
     border: none;
     padding: 10px;
     border-radius: 8px;
@@ -189,10 +185,10 @@
     gap: 20px;
   }
   .related-card {
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color, #ccc); /* Use CSS variable with fallback */
     padding: 10px;
     border-radius: 8px;
-    background-color: #a9a9a9; /* Darker grey background color */
+    background-color: var(--container-background-color, #a9a9a9); /* Use CSS variable with fallback */
     width: 150px; /* 25% of card-details width */
     text-align: center;
   }
@@ -204,8 +200,8 @@
     cursor: pointer;
     padding: 10px;
     border-radius: 8px;
-    background-color: #808080; /* Darker grey background color */
-    color: #fff; /* White text color */
+    background-color: var(--button-background-color, #808080); /* Use CSS variable with fallback */
+    color: var(--button-text-color, #fff); /* Use CSS variable with fallback */
   }
   .related-cards a {
     display: block;
@@ -217,7 +213,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Align items to the left */
-    background-color: #a9a9a9; /* Darker grey background color */
+    background-color: var(--container-background-color, #a9a9a9); /* Use CSS variable with fallback */
     padding: 10px;
     border-radius: 8px;
     width: 250px; /* Reduce width */
