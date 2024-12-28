@@ -2,33 +2,60 @@
 
 <script>
   let numberOfButtons = 3; // Default number of buttons
+  const sliderWidth = 180; // Slider width
   let selectedSideCodes = {
-    runner: false,
-    corp: false
+    runner: 'false',
+    corp: 'false'
   };
   let selectedTypeCodes = {
-    agenda: false,
-    asset: false,
-    event: false,
-    hardware: false,
-    ice: false,
-    identity: false,
-    operation: false,
-    program: false,
-    resource: false,
-    upgrade: false
+    agenda: 'false',
+    asset: 'false',
+    event: 'false',
+    hardware: 'false',
+    ice: 'false',
+    identity: 'false',
+    operation: 'false',
+    program: 'false',
+    resource: 'false',
+    upgrade: 'false'
   };
   let selectedFactionCodes = {
-    jinteki: false,
-    nbn: false,
-    'haas-bioroid': false,
-    'weyland-consortium': false,
-    'neutral-corp': false,
-    'neutral-runner': false,
-    anarch: false,
-    criminal: false,
-    shaper: false
+    jinteki: 'false',
+    nbn: 'false',
+    'haas-bioroid': 'false',
+    'weyland-consortium': 'false',
+    'neutral-corp': 'false',
+    'neutral-runner': 'false',
+    anarch: 'false',
+    criminal: 'false',
+    shaper: 'false'
   };
+
+  function toggleSelection(type, key) {
+    console.log(`Toggling ${key} from ${type[key]}`);
+    const newType = { ...type };
+    if (newType[key] === 'false') {
+      newType[key] = 'include';
+    } else if (newType[key] === 'include') {
+      newType[key] = 'exclude';
+    } else {
+      newType[key] = 'false';
+    }
+    console.log(`Toggled ${key} to ${newType[key]}`);
+    if (type === selectedSideCodes) {
+      selectedSideCodes = newType;
+    } else if (type === selectedTypeCodes) {
+      selectedTypeCodes = newType;
+    } else if (type === selectedFactionCodes) {
+      selectedFactionCodes = newType;
+    }
+  }
+
+  function displayValue(value) {
+    if (value === 'include') return '✓';
+    if (value === 'exclude') return '✗';
+    return '';
+  }
 </script>
 
 <style>
@@ -55,57 +82,99 @@
   .options-container .option-group label {
     margin-right: 10px;
   }
-  .options-container .option-group input {
+  .options-container .option-group button {
     margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 185px; /* Set button width to 185px */
+    display: flex;
+    justify-content: space-between; /* Align text and symbol */
   }
-  .list-container {
+  .state-container {
     margin-top: 20px;
     padding: 10px;
     background-color: #d3d3d3; /* Light grey background color */
     border-radius: 8px;
+  }
+  .include {
+    background-color: green;
+    color: white;
+  }
+  .exclude {
+    background-color: rgb(185, 23, 23);
+    color: white;
+  }
+  .false {
+    background-color: grey;
+    color: white;
   }
 </style>
 
 <div class="options-container">
   <h3>Options</h3>
   <div class="option-group">
-    <label>Guess options:</label>
-    <label><input type="radio" bind:group={numberOfButtons} value="2"> 2</label>
-    <label><input type="radio" bind:group={numberOfButtons} value="3"> 3</label>
-    <label><input type="radio" bind:group={numberOfButtons} value="4"> 4</label>
-  </div>
-  <div class="option-group">
     <label>Side:</label>
-    <label><input type="checkbox" bind:checked={selectedSideCodes.runner}> Runner</label>
-    <label><input type="checkbox" bind:checked={selectedSideCodes.corp}> Corp</label>
+    {#each Object.keys(selectedSideCodes) as side}
+      <button class={selectedSideCodes[side]} on:click={() => toggleSelection(selectedSideCodes, side)}>
+        <span>{side.charAt(0).toUpperCase() + side.slice(1)}</span>
+        <span>{displayValue(selectedSideCodes[side])}</span>
+      </button>
+    {/each}
   </div>
   <div class="option-group">
     <label>Faction:</label>
     {#each Object.keys(selectedFactionCodes) as faction}
-      <label><input type="checkbox" bind:checked={selectedFactionCodes[faction]}> 
-        {#if faction === 'neutral-corp'}
-          Neutral (Corp)
-        {:else if faction === 'neutral-runner'}
-          Neutral (Runner)
-        {:else}
-          {faction.charAt(0).toUpperCase() + faction.slice(1).replace('-', ' ')}
-        {/if}
-      </label>
+      <button class={selectedFactionCodes[faction]} on:click={() => toggleSelection(selectedFactionCodes, faction)}>
+        <span>
+          {#if faction === 'neutral-corp'}
+            Neutral (Corp)
+          {:else if faction === 'neutral-runner'}
+            Neutral (Runner)
+          {:else}
+            {faction.charAt(0).toUpperCase() + faction.slice(1).replace('-', ' ')}
+          {/if}
+        </span>
+        <span>{displayValue(selectedFactionCodes[faction])}</span>
+      </button>
     {/each}
   </div>
   <div class="option-group">
     <label>Type:</label>
     {#each Object.keys(selectedTypeCodes) as type}
-      <label><input type="checkbox" bind:checked={selectedTypeCodes[type]}> {type.charAt(0).toUpperCase() + type.slice(1)}</label>
+      <button class={selectedTypeCodes[type]} on:click={() => toggleSelection(selectedTypeCodes, type)}>
+        <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+        <span>{displayValue(selectedTypeCodes[type])}</span>
+      </button>
     {/each}
+  </div>
+  <div class="option-group">
+    <label>Guess options:</label>
+    <input type="range" min="2" max="4" bind:value={numberOfButtons} style="width: {sliderWidth}px;">
+    <div>Selected: {numberOfButtons}</div>
   </div>
 </div>
 
-<div class="list-container">
+<div class="state-container">
+  <h3><b>State</b></h3>
+  <p><b>Number of Buttons:</b> {numberOfButtons}</p>
+  <p><b>Side Codes:</b></p>
   <ul>
-    <li>Guess options</li>
-    <li>Side</li>
-    <li>Faction</li>
-    <li>Type</li>
+    {#each Object.keys(selectedSideCodes) as side}
+      <li>{side.charAt(0).toUpperCase() + side.slice(1)}: {displayValue(selectedSideCodes[side])}</li>
+    {/each}
+  </ul>
+  <p><b>Faction Codes:</b></p>
+  <ul>
+    {#each Object.keys(selectedFactionCodes) as faction}
+      <li>{faction.charAt(0).toUpperCase() + faction.slice(1).replace('-', ' ')}: {displayValue(selectedFactionCodes[faction])}</li>
+    {/each}
+  </ul>
+  <p><b>Type Codes:</b></p>
+  <ul>
+    {#each Object.keys(selectedTypeCodes) as type}
+      <li>{type.charAt(0).toUpperCase() + type.slice(1)}: {displayValue(selectedTypeCodes[type])}</li>
+    {/each}
   </ul>
 </div>
