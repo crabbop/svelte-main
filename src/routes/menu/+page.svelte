@@ -144,62 +144,54 @@
   }
 </style>
 
-<div class="variant-filled-primary {isCollapsed ? 'collapsed' : ''}">
+<div class="options-container {isCollapsed ? 'collapsed' : ''}">
   <button class="toggle-button" on:click={toggleCollapse} style="--button-right: {isCollapsed ? '-110px' : '45px'};">
     {isCollapsed ? 'Filter Options' : 'Hide'}
   </button>
   <h3><b>Filter Options</b></h3>
   <div class="option-group">
     <label>Side:</label>
-    <div class="btn-group-vertical variant-filled">
-      {#each Object.keys(selectedSideCodes) as side}
-        <button class={selectedSideCodes[side]} on:click={() => toggleSelection(selectedSideCodes, side)} style="width: 185px;">
-          <span>{side.charAt(0).toUpperCase() + side.slice(1)}</span>
-          <span>{displayValue(selectedSideCodes[side])}</span>
-        </button>
-      {/each}
-    </div>
+    {#each Object.keys(selectedSideCodes) as side}
+      <button class={selectedSideCodes[side]} on:click={() => toggleSelection(selectedSideCodes, side)}>
+        <span>{side.charAt(0).toUpperCase() + side.slice(1)}</span>
+        <span>{displayValue(selectedSideCodes[side])}</span>
+      </button>
+    {/each}
   </div>
   <div class="option-group">
     <label>Faction:</label>
-    <div class="btn-group-vertical variant-filled">
-      {#each Object.keys(selectedFactionCodes) as faction}
-        <button class={selectedFactionCodes[faction]} on:click={() => toggleSelection(selectedFactionCodes, faction)} style="width: 185px;">
-          <span>
-            {#if faction === 'neutral-corp'}
-              Neutral (Corp)
-            {:else if faction === 'neutral-runner'}
-              Neutral (Runner)
-            {:else}
-              {faction.charAt(0).toUpperCase() + faction.slice(1).replace('-', ' ')}
-            {/if}
-          </span>
-          <span>{displayValue(selectedFactionCodes[faction])}</span>
-        </button>
-      {/each}
-    </div>
+    {#each Object.keys(selectedFactionCodes) as faction}
+      <button class={selectedFactionCodes[faction]} on:click={() => toggleSelection(selectedFactionCodes, faction)}>
+        <span>
+          {#if faction === 'neutral-corp'}
+            Neutral (Corp)
+          {:else if faction === 'neutral-runner'}
+            Neutral (Runner)
+          {:else}
+            {faction.charAt(0).toUpperCase() + faction.slice(1).replace('-', ' ')}
+          {/if}
+        </span>
+        <span>{displayValue(selectedFactionCodes[faction])}</span>
+      </button>
+    {/each}
   </div>
   <div class="option-group">
     <label>Type:</label>
-    <div class="btn-group-vertical variant-filled">
-      {#each Object.keys(selectedTypeCodes) as type}
-        <button class={selectedTypeCodes[type]} on:click={() => toggleSelection(selectedTypeCodes, type)} style="width: 185px;">
-          <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
-          <span>{displayValue(selectedTypeCodes[type])}</span>
-        </button>
-      {/each}
-    </div>
+    {#each Object.keys(selectedTypeCodes) as type}
+      <button class={selectedTypeCodes[type]} on:click={() => toggleSelection(selectedTypeCodes, type)}>
+        <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+        <span>{displayValue(selectedTypeCodes[type])}</span>
+      </button>
+    {/each}
   </div>
   <div class="option-group">
     <label>Startup Pack:</label>
-    <div class="btn-group-vertical variant-filled">
-      {#each Object.keys(selectedPackCodes) as pack}
-        <button class={selectedPackCodes[pack]} on:click={() => toggleSelection(selectedPackCodes, pack)} style="width: 185px;">
-          <span>{pack.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-          <span>{displayValue(selectedPackCodes[pack])}</span>
-        </button>
-      {/each}
-    </div>
+    {#each Object.keys(selectedPackCodes) as pack}
+      <button class={selectedPackCodes[pack]} on:click={() => toggleSelection(selectedPackCodes, pack)}>
+        <span>{pack.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+        <span>{displayValue(selectedPackCodes[pack])}</span>
+      </button>
+    {/each}
   </div>
   <div class="option-group">
     <label>Guess options:</label>
